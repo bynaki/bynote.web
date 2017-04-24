@@ -1,0 +1,11 @@
+<!--<div id="query" class="input-group input-group-lg">-->
+<div id="query">
+  <a v-for="el in urlEles" class="btn btn-success btn-xs" :href="el.url">{{el.name}}</a>
+  <!--<a class="btn btn-info btn-xs" href="#">Method</a>-->
+  <input
+    type="search"
+    class="form-control input-lg query-input"
+    placeholder="Search for..."
+    v-model="queryText"
+  >
+</div>

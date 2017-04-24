@@ -1,0 +1,11 @@
+#query {
+  width: 100%;
+}
+
+#query input {
+  margin: 10px 0;
+}
+
+#query a {
+  margin-right: 2px;
+}

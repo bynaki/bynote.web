@@ -1,0 +1,10 @@
+<div class="list-group">
+  <a
+    v-for="item in response"
+    :href="realPath(item.name)"
+    class="list-group-item"
+  >
+    <h4 class="list-group-item-heading">{{item.name}}</h4>
+    <p class="list-group-item-text">{{item.description}}</p>
+  </a>
+</div>

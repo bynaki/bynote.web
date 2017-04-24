@@ -1,0 +1,53 @@
+{
+  "name": "vue-ts-webpack-starter-kit",
+  "description": "vue + typescript using webpack starter kit",
+  "version": "0.1.1",
+  "author": {
+    "name": "bynaki",
+    "email": "bynaki@icloud.com"
+  },
+  "types": "./declare.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bynaki/vue-ts-webpack-starter-kit.git"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server -d --hot --inline",
+    "build": "cross-env NODE_ENV=production npm run clean.dist && npm run compile",
+    "release": "npm run build && npm run clean.www && npm run copy.www",
+    "compile": "webpack --config configs/webpack.config.prod.js",
+    "clean.dist": "rimraf dist",
+    "clean.www": "rimraf /Users/naki/cloud/www",
+    "copy.www": "ncp dist /Users/naki/cloud/www"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bootstrap": "^3.3.33",
+    "@types/jquery": "^2.0.41",
+    "@types/node": "^7.0.13",
+    "compression-webpack-plugin": "^0.4.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^4.0.0",
+    "css-loader": "^0.28.0",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "ncp": "^2.0.0",
+    "raw-loader": "^0.5.1",
+    "rimraf": "^2.6.1",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2",
+    "webpack": "^2.4.1",
+    "webpack-browser-plugin": "^1.0.20",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "dependencies": {
+    "axios": "^0.16.1",
+    "bootstrap": "^3.3.7",
+    "fuzzy": "^0.1.3",
+    "jquery": "^3.2.1",
+    "notie": "^4.3.0",
+    "vue": "^2.2.6",
+    "vue-class-component": "^5.0.1",
+    "vue-property-decorator": "^4.0.0",
+    "vue-router": "^2.4.0"
+  }
+}
