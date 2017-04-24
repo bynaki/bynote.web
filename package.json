@@ -1,6 +1,6 @@
 {
-  "name": "vue-ts-webpack-starter-kit",
-  "description": "vue + typescript using webpack starter kit",
+  "name": "bynote.web",
+  "description": "byNote Web App",
   "version": "0.1.1",
   "author": {
     "name": "bynaki",
@@ -9,7 +9,7 @@
   "types": "./declare.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bynaki/vue-ts-webpack-starter-kit.git"
+    "url": "https://github.com/bynaki/bynote.git"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server -d --hot --inline",
