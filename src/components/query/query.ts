@@ -1,7 +1,7 @@
 import './query.css'
 import Vue from 'vue'
 import {Component, Watch} from 'vue-property-decorator'
-import {DeclareLogger, Logger} from '../../util/log'
+import {DeclareLogger, Logger} from '../../utils'
 
 
 @Component({

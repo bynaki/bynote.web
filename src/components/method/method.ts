@@ -7,7 +7,7 @@ import {MethodLump} from '../../queries/QueryBase'
 import {
   DeclareLogger,
   Logger,
-} from '../../util/log'
+} from '../../utils'
 
 
 @Component({

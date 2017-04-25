@@ -4,7 +4,7 @@ import VueRouter, {Route} from 'vue-router'
 import Component from 'vue-class-component'
 import {QueryComponent} from '../query'
 import Processor from '../../Processor'
-import {Logger, DeclareLogger} from '../../util/log'
+import {Logger, DeclareLogger} from '../../utils'
 
 
 @Component({

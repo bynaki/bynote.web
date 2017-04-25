@@ -6,7 +6,7 @@ import {
 import {
   DeclareLogger,
   Logger,
-} from '../../util/log'
+} from '../../utils'
 
 export interface ListItem {
   name: string

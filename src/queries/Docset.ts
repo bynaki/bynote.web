@@ -9,7 +9,7 @@ import {
 import {
   DeclareLogger,
   Logger,
-} from '../util/log'
+} from '../utils'
 import {
   DocsetInfo,
   ExtendedFindResult,
