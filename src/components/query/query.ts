@@ -1,7 +1,11 @@
 import './query.css'
 import Vue from 'vue'
 import {Component, Watch} from 'vue-property-decorator'
-import {DeclareLogger, Logger} from '../../utils'
+import {
+  DeclareLogger,
+  Logger,
+  KeyboardShortcut,
+} from '../../utils'
 
 
 @Component({
@@ -12,13 +16,32 @@ export class QueryComponent extends Vue {
   log: Logger
   queryText: string = ''
   urlEles: {name: string, url: string}[] = []
+  private _shortDown: KeyboardShortcut
+  private _shortUp: KeyboardShortcut
 
   mounted() {
     this.log.info('mounted')
     this.$router.afterEach(this._sync)
     this._sync()
-    const input = this.$el.querySelector('.query-input') as HTMLInputElement
-    input.focus()
+    this._shortDown = new KeyboardShortcut(this.$el.querySelector('#query-input'))
+    let remainText = ''
+    this._shortDown.register('backspace', event => {
+      if(!this.queryText && !remainText) {
+        if(this.urlEles.length > 1) {
+          const urls = this.urlEles.map(ele => ele.url)
+          this.$router.push(urls.pop())
+        }
+        event.preventDefault()
+        return
+      }
+      if(!remainText) {
+        remainText = this.queryText
+      }
+    })
+    this._shortUp = new KeyboardShortcut(this.$el.querySelector('#query-input'), 'keyup')
+    this._shortUp.register('backspace', event => {
+      remainText = this.queryText
+    })
   }
 
   private _sync() {
@@ -30,8 +53,9 @@ export class QueryComponent extends Vue {
       const url = pre + el
       trans.push({name: el, url: url})
       return url + '/'
-    }, '/#')
+    }, '')
     trans[0].name = 'Root'
+    trans[0].url = '/'
     if(trans.length === 2 && trans[1].name === '') {
       trans = trans.slice(0, 1)
     }

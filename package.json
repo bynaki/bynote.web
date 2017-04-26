@@ -44,6 +44,7 @@
     "bootstrap": "^3.3.7",
     "fuzzy": "^0.1.3",
     "jquery": "^3.2.1",
+    "keycode": "^2.1.8",
     "notie": "^4.3.0",
     "vue": "^2.2.6",
     "vue-class-component": "^5.0.1",

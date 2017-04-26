@@ -29,6 +29,6 @@ export class DocsetListComponent extends Vue {
 
   realPath(uri: string): string {
     const path = (this.$route.path === '/')? '' : this.$route.path
-    return `/#${path}/${encodeURIComponent(uri)}`
+    return `${path}/${encodeURIComponent(uri)}`
   }
 }

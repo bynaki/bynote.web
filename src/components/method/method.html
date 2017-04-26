@@ -1,10 +1,12 @@
 <div class="list-group">
-  <a
-    v-for="item in response"
-    :href="realPath(item.name)"
+  <router-link
     class="list-group-item"
+    v-for="(item, index) in response"
+    :to="realPath(item.name)"
+    :key="item.name"
+    :class="(index === activeIndex)? 'active' : ''"
   >
     <h4 class="list-group-item-heading">{{item.name}}</h4>
     <p class="list-group-item-text">{{item.description}}</p>
-  </a>
+  </router-link>
 </div>

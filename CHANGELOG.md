@@ -3,8 +3,9 @@
 
 ## v0.1 (Somewhere Only We Know - Keane)
 
-### v0.1.3 
+### v0.1.3 (Feeling Good - Muse)
 - log -> utils && fixed: lump
+- keyboard shortcut
 
 ### v0.1.2 (On a Day Like Today - Keane)
 - 정리

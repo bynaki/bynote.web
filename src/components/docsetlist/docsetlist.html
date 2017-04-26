@@ -1,11 +1,11 @@
 <div class="list-group">
-  <a
-    v-for="item in response"
-    :href="realPath(item.name)"
+  <router-link
     class="list-group-item"
+    v-for="(item, index) in response"
+    :to="realPath(item.name)"
   >
     <h4 class="list-group-item-heading">{{item.name}}</h4>
     <p class="list-group-item-text">keyword: {{(item.info)? item.info.keyword : 'error'}}</p>
     <p class="list-group-item-text">scope: {{item.info.scope}}</p>
-  </a>
+  </router-link>
 </div>
