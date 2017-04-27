@@ -3,19 +3,18 @@ import {
   Component,
   Prop,
 } from 'vue-property-decorator'
+import {DeclareListKeyboard} from '../listkeyboard'
 import {
   DeclareLogger,
   Logger,
 } from '../../utils'
-// import {
-//   DocsetInfo
-// } from '../../interface'
 import Docset from '../../queries/Docset'
 
 
 @Component({
   template: require('./docsetlist.html')
 })
+@DeclareListKeyboard()
 @DeclareLogger()
 export class DocsetListComponent extends Vue {
   log: Logger
@@ -27,8 +26,7 @@ export class DocsetListComponent extends Vue {
     this.log.info('mounted')
   }
 
-  realPath(uri: string): string {
-    const path = (this.$route.path === '/')? '' : this.$route.path
-    return `${path}/${encodeURIComponent(uri)}`
+  destroyed() {
+    this.log.info('destroy')
   }
 }

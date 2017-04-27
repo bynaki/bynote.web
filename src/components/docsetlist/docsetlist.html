@@ -3,6 +3,7 @@
     class="list-group-item"
     v-for="(item, index) in response"
     :to="realPath(item.name)"
+    :key="item.name"
   >
     <h4 class="list-group-item-heading">{{item.name}}</h4>
     <p class="list-group-item-text">keyword: {{(item.info)? item.info.keyword : 'error'}}</p>

@@ -29,6 +29,7 @@ export class QueryComponent extends Vue {
       if(!this.queryText && !remainText) {
         if(this.urlEles.length > 1) {
           const urls = this.urlEles.map(ele => ele.url)
+          urls.pop()
           this.$router.push(urls.pop())
         }
         event.preventDefault()

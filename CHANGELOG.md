@@ -6,6 +6,7 @@
 ### v0.1.3 (Feeling Good - Muse)
 - log -> utils && fixed: lump
 - keyboard shortcut
+- listkeyboard.ts
 
 ### v0.1.2 (On a Day Like Today - Keane)
 - 정리
