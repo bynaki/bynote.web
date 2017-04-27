@@ -3,6 +3,9 @@
 
 ## v0.1 (Somewhere Only We Know - Keane)
 
+### v0.1.4
+- 검색에 _.debounce() 달기
+
 ### v0.1.3 (Feeling Good - Muse)
 - log -> utils && fixed: lump
 - keyboard shortcut

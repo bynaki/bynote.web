@@ -9,7 +9,7 @@
   "types": "./declare.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bynaki/bynote.git"
+    "url": "https://github.com/bynaki/bynote.web.git"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server -d --hot --inline",
