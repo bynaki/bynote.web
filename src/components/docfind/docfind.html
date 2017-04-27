@@ -1,0 +1,14 @@
+<div class="list-group">
+  <a
+    class="list-group-item"
+    target="_blink"
+    v-for="(item, index) in response"
+    :href="item.path"
+    :key="item.path"
+  >
+    <h4 class="list-group-item-heading">{{item.name}}</h4>
+    <p class="list-group-item-text">type: {{item.type}}</p>
+    <p class="list-group-item-text">keyword: {{item.keyword}}</p>
+    <p class="list-group-item-text">scope: {{item.scope}}</p>
+  </a>
+</div>

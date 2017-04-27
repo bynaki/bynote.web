@@ -39,7 +39,6 @@ export class QueryBase {
       return method as SelfMethod
     } else {
       const lumpWithMethodName = QueryBase._lumpList.get(this.className()).get(name)
-      // const lumpWithMethodName = this._frozenLumpList.get(name)
       const method = (...args) => this[lumpWithMethodName.methodName](...args)
       method['getLump'] = (): MethodLump => _.clone<MethodLump>(lumpWithMethodName.lump)
       return method as SelfMethod
@@ -67,23 +66,8 @@ export function DeclareMethod(lump: MethodLump) {
 }
 
 
-// export function DeclareMethod(lump: MethodLump) {
-//   return (target: any, name: string, descriptor: PropertyDescriptor) => {
-//     const cLump = _.clone(lump)
-//     DeclareMethod['']
-//     console.log('target.hello: ', target.constructor['name'])
-//     target._lumpList.set(cLump.name, {methodName: name, lump: cLump})
-//   }
-// }
-
 export function DeclareClass() {
   return (target: any) => {
-    // target.prototype._frozenLumpList
-    //   = new Map<string, {methodName: string, lump: MethodLump}>(
-    //     target.prototype._lumpList
-    //   )
-    // target.prototype._lumpList 
-    //   = new Map<string, {methodName: string, lump: MethodLump}>()
   }
 }
 

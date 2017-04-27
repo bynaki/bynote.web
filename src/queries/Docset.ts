@@ -15,8 +15,8 @@ import {
   ExtendedFindResult,
 } from '../interface'
 import {
-  ListComponent
-} from '../components/list'
+  DocFindComponent
+} from '../components/docfind'
 
 
 @DeclareLogger()
@@ -33,7 +33,7 @@ export default class Docset extends QueryBase {
   @DeclareMethod({
     name: 'Find',
     description: 'Find Document',
-    component: ListComponent,
+    component: DocFindComponent,
   })
   async find(pattern: string): Promise<ExtendedFindResult[]> {
     if(!pattern) {
