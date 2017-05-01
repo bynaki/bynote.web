@@ -3,9 +3,10 @@
 
 ## v0.1 (Somewhere Only We Know - Keane)
 
-### v0.1.4
+### v0.1.4 (The A Team - Ed Sheeran)
 - 검색에 _.debounce() 달기
 - DocFindComponent
+- fixed: 화면에 벗어나서 다시 들어왔을 때 focus는 되는데 active가 지워진다. &&  fixed: http로 시작하는 href인데도 불구하고 query창에서 엔터쳤을 때 새창이 열리지 않는다.
 
 ### v0.1.3 (Feeling Good - Muse)
 - log -> utils && fixed: lump

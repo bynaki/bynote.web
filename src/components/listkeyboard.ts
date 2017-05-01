@@ -1,4 +1,5 @@
 import * as _ from 'lodash'
+import {parse as parseUrl} from 'url'
 import {KeyboardShortcut} from '../utils'
 
 
@@ -7,9 +8,6 @@ export function DeclareListKeyboard() {
     target.prototype._mounted = target.prototype.mounted
     target.prototype._destroyed = target.prototype.destroyed
     target.prototype.mounted = function() {
-      this.$router.afterEach(to => {
-        this.log.info('path: ', to.fullPath)
-      })
       const focus = (event: KeyboardEvent) => {
         const list = new ItemList(this.$el)
         list.focus(list.activeIndex)
@@ -25,7 +23,13 @@ export function DeclareListKeyboard() {
         if(document.activeElement.id === 'query-input') {
           const itemList = new ItemList(this.$el)
           if(itemList.length !== 0) {
-            window.location.href = itemList.item(0).getAttribute('href')
+            const url = itemList.item(0).getAttribute('href')
+            const target = itemList.item(0).getAttribute('target')
+            if(target) {
+              window.open(url, target)
+            } else {
+              window.location.href = url
+            }
           }
         }
       })
@@ -70,6 +74,16 @@ class ItemList {
 
   constructor(private _el: HTMLElement) {
     this._itemList = this._toArray<HTMLAnchorElement>(_el.querySelectorAll('a.list-group-item'))
+    this._itemList.forEach(item => {
+      item.addEventListener('focus', event => {
+        const target: HTMLAnchorElement = event.target as HTMLAnchorElement
+        target.classList.add('active')
+      })
+      item.addEventListener('blur', event => {
+        const target: HTMLAnchorElement = event.target as HTMLAnchorElement
+        target.classList.remove('active')
+      })
+    })
   }
 
   get activedItem(): HTMLAnchorElement {
@@ -92,25 +106,25 @@ class ItemList {
     return this._itemList[index]
   }
 
-  active(index: number) {
-    if(this._itemList.length !== 0) {
-      const idx = _.clamp(index, 0, this._itemList.length - 1)
-      this._itemList.forEach(item => item.classList.remove('active')) 
-      this._itemList[idx].classList.add('active')
-    }
-  }
+  // active(index: number) {
+  //   if(this._itemList.length !== 0) {
+  //     const idx = _.clamp(index, 0, this._itemList.length - 1)
+  //     this._itemList.forEach(item => item.classList.remove('active')) 
+  //     this._itemList[idx].classList.add('active')
+  //   }
+  // }
 
   focus(index: number) {
     if(this._itemList.length !== 0) {
       const idx = _.clamp(index, 0, this._itemList.length - 1)
-      this._itemList.forEach(item => item.blur())
-      this.active(idx)
+      // this._itemList.forEach(item => item.blur())
+      // this.active(idx)
       this._itemList[idx].focus()
-      this._itemList[idx].addEventListener('blur', (event) => {
-        console.log('blur')
-        const target: HTMLAnchorElement = event.target as HTMLAnchorElement
-        target.classList.remove('active')
-      })
+      // this._itemList[idx].addEventListener('blur', (event) => {
+      //   console.log('blur')
+      //   const target: HTMLAnchorElement = event.target as HTMLAnchorElement
+      //   target.classList.remove('active')
+      // })
     }
   }
 
