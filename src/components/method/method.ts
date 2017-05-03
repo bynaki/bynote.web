@@ -1,22 +1,18 @@
 import Vue from 'vue'
 import {
-  Component,
   Prop,
-  Watch,
 } from 'vue-property-decorator'
+import {ListComponent} from '../listcomponent'
 import {MethodLump} from '../../queries/QueryBase'
-import {DeclareListKeyboard} from '../listkeyboard'
 import {
   DeclareLogger,
   Logger,
-  KeyboardShortcut,
 } from '../../utils'
 
 
-@Component({
-  template: require('./method.html')
+@ListComponent({
+  template: require('./method.html'),
 })
-@DeclareListKeyboard()
 @DeclareLogger()
 export class MethodComponent extends Vue {
   log: Logger

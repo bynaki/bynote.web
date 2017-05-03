@@ -1,12 +1,29 @@
+import Vue, {ComponentOptions} from 'vue'
+import Component from 'vue-class-component'
 import * as _ from 'lodash'
 import {parse as parseUrl} from 'url'
 import {KeyboardShortcut} from '../utils'
 
 
-export function DeclareListKeyboard() {
-  return (target: any) => {
+export declare type VueClass = {
+    new (): Vue
+} & typeof Vue
+
+
+function onResChanged(newRes: any) {
+  this.log.info('onResChanged')
+  this.$nextTick(() => {
+    const list = new ItemList(this.$el)
+    list.active(0)
+  })
+}
+
+export function ListComponent<U extends Vue>(options: ComponentOptions<U>)
+  : <V extends VueClass>(target: V) => V {
+  return (target: VueClass) => {
     target.prototype._mounted = target.prototype.mounted
     target.prototype._destroyed = target.prototype.destroyed
+
     target.prototype.mounted = function() {
       const focus = (event: KeyboardEvent) => {
         const list = new ItemList(this.$el)
@@ -22,9 +39,10 @@ export function DeclareListKeyboard() {
       KeyboardShortcut.globalShortcut.register('enter', event => {
         if(document.activeElement.id === 'query-input') {
           const itemList = new ItemList(this.$el)
-          if(itemList.length !== 0) {
-            const url = itemList.item(0).getAttribute('href')
-            const target = itemList.item(0).getAttribute('target')
+          if(itemList.activeIndex !== -1) {
+            const idx = itemList.activeIndex
+            const url = itemList.item(idx).getAttribute('href')
+            const target = itemList.item(idx).getAttribute('target')
             if(target) {
               window.open(url, target)
             } else {
@@ -46,6 +64,8 @@ export function DeclareListKeyboard() {
       }
       this._shortcut.register('k', up)
       this._shortcut.register('up', up)
+      const list = new ItemList(this.$el)
+      list.active(0)
       if(this._mounted) {
         this._mounted()
       }
@@ -65,6 +85,11 @@ export function DeclareListKeyboard() {
       const path = (this.$route.path === '/')? '' : this.$route.path
       return `${path}/${encodeURIComponent(uri)}`
     }
+
+    let cOpts = _.assign({}, options)
+    // 사실을 버그를 유발할 수있다. options.watch에 response가 없다는 걸 단정하고 있다.
+    cOpts.watch = _.assign(cOpts.watch, {response: onResChanged})
+    return Component(cOpts)(target)
   }
 }
 
@@ -77,11 +102,14 @@ class ItemList {
     this._itemList.forEach(item => {
       item.addEventListener('focus', event => {
         const target: HTMLAnchorElement = event.target as HTMLAnchorElement
+        this._itemList.forEach(item => {
+          item.classList.remove('active')
+        })
         target.classList.add('active')
       })
       item.addEventListener('blur', event => {
         const target: HTMLAnchorElement = event.target as HTMLAnchorElement
-        target.classList.remove('active')
+        // target.classList.remove('active')
       })
     })
   }
@@ -106,13 +134,13 @@ class ItemList {
     return this._itemList[index]
   }
 
-  // active(index: number) {
-  //   if(this._itemList.length !== 0) {
-  //     const idx = _.clamp(index, 0, this._itemList.length - 1)
-  //     this._itemList.forEach(item => item.classList.remove('active')) 
-  //     this._itemList[idx].classList.add('active')
-  //   }
-  // }
+  active(index: number) {
+    if(this._itemList.length !== 0) {
+      const idx = _.clamp(index, 0, this._itemList.length - 1)
+      this._itemList.forEach(item => item.classList.remove('active')) 
+      this._itemList[idx].classList.add('active')
+    }
+  }
 
   focus(index: number) {
     if(this._itemList.length !== 0) {

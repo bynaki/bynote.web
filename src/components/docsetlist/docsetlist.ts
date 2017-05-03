@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import {
-  Component,
   Prop,
 } from 'vue-property-decorator'
-import {DeclareListKeyboard} from '../listkeyboard'
+import {ListComponent} from '../listcomponent'
 import {
   DeclareLogger,
   Logger,
@@ -11,10 +10,9 @@ import {
 import Docset from '../../queries/Docset'
 
 
-@Component({
+@ListComponent({
   template: require('./docsetlist.html')
 })
-@DeclareListKeyboard()
 @DeclareLogger()
 export class DocsetListComponent extends Vue {
   log: Logger
