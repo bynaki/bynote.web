@@ -2,7 +2,11 @@ import Vue, {ComponentOptions} from 'vue'
 import Component from 'vue-class-component'
 import * as _ from 'lodash'
 import {parse as parseUrl} from 'url'
-import {KeyboardShortcut} from '../utils'
+import {
+  KeyboardShortcut,
+  Workflow,
+  GlobalData
+} from '../utils'
 
 
 export declare type VueClass = {
@@ -25,18 +29,32 @@ export function ListComponent<U extends Vue>(options: ComponentOptions<U>)
     target.prototype._destroyed = target.prototype.destroyed
 
     target.prototype.mounted = function() {
-      const focus = (event: KeyboardEvent) => {
+      const workflow = new Workflow(() => {
+        return !GlobalData.debouncing
+      })
+      this._turnOn = debouncing => {
+        console.log('this._turn > debouncing: ', debouncing)
+        if(debouncing === false) {
+          workflow.trunOn()
+        }
+      }
+      GlobalData.on('debouncing', this._turnOn)
+
+      const focus = workflow.push((event: KeyboardEvent) => {
         const list = new ItemList(this.$el)
         list.focus(list.activeIndex)
+      })
+      KeyboardShortcut.globalShortcut.register('esc', event => {
         event.preventDefault()
-      }
-      KeyboardShortcut.globalShortcut.register('esc', focus)
+        focus(event)
+      })
       KeyboardShortcut.globalShortcut.register('down', event => {
+        event.preventDefault()
         if(document.activeElement.id === 'query-input') {
           focus(event)
         }
       })
-      KeyboardShortcut.globalShortcut.register('enter', event => {
+      KeyboardShortcut.globalShortcut.register('enter', workflow.push(event => {
         if(document.activeElement.id === 'query-input') {
           const itemList = new ItemList(this.$el)
           if(itemList.activeIndex !== -1) {
@@ -50,18 +68,18 @@ export function ListComponent<U extends Vue>(options: ComponentOptions<U>)
             }
           }
         }
-      })
+      }))
       this._shortcut = new KeyboardShortcut(this.$el)
-      const down = (event: KeyboardEvent) => {
+      const down = workflow.push((event: KeyboardEvent) => {
         const list = new ItemList(this.$el)
         list.focus(list.activeIndex + 1)
-      }
+      })
       this._shortcut.register('j', down)
       this._shortcut.register('down', down)
-      const up = (event: KeyboardEvent) => {
+      const up = workflow.push((event: KeyboardEvent) => {
         const list = new ItemList(this.$el)
         list.focus(list.activeIndex - 1)
-      }
+      })
       this._shortcut.register('k', up)
       this._shortcut.register('up', up)
       const list = new ItemList(this.$el)
@@ -76,6 +94,7 @@ export function ListComponent<U extends Vue>(options: ComponentOptions<U>)
       KeyboardShortcut.globalShortcut.remove('esc')
       KeyboardShortcut.globalShortcut.remove('down')
       KeyboardShortcut.globalShortcut.remove('enter')
+      GlobalData.removeListener('debouncing', this._turnOn)
       if(this._destroyed) {
         this._destroyed()
       }

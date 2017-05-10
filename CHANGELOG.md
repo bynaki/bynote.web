@@ -3,8 +3,9 @@
 
 ## v0.1 (Somewhere Only We Know - Keane)
 
-### v0.1.5
+### v0.1.5 (Enter Sandman - Metallica)
 - ListComponent
+- Workflow && GlobalData
 
 ### v0.1.4 (The A Team - Ed Sheeran)
 - 검색에 _.debounce() 달기

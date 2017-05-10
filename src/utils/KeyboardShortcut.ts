@@ -75,8 +75,6 @@ export class KeyboardShortcut {
     }
   }
 
-
-
   private _onKeydown(event: KeyboardEvent) {
     // ctrl+shift+alt+meta
     const key: string[] = []

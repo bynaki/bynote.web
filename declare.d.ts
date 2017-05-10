@@ -1,5 +1,5 @@
 declare module 'notie' {
-  function alert(arg: {
+  export function alert(arg: {
     type?: number | string
     text: string
     stay?: boolean

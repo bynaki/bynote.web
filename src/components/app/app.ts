@@ -2,13 +2,15 @@ import './app.css'
 import Vue from 'vue'
 import VueRouter, {Route} from 'vue-router'
 import Component from 'vue-class-component'
-import * as _ from 'lodash'
+import * as debounce from 'debounce-promise'
 import {QueryComponent} from '../query'
 import Processor from '../../Processor'
 import {
   Logger,
   DeclareLogger,
   KeyboardShortcut,
+  Workflow,
+  GlobalData,
 } from '../../utils'
 
 
@@ -25,19 +27,23 @@ export class AppComponent extends Vue {
   response: any = null
   processor: Processor = Processor.get()
   private _input: HTMLInputElement
-  private _sync: (route: Route) => void
+  private _sync: (route: Route) => void 
 
   mounted() {
     this.log.info('mounted')
     this._input = this.$el.querySelector('#query-input') as HTMLInputElement
-    this._sync = _.debounce(async (route: Route) => {
-      // this.log.info(route.fullPath)
+    const debounceFunc = debounce(async (route: Route) => {
       const method = await this.processor.get(route.path)
       this.response = await method((route.query.query)? route.query.query : '')
       this.view = method.getLump().component
       this._input.focus()
       return this.response
     }, 500)
+    this._sync = async (route: Route) => {
+      GlobalData.debouncing = true
+      await debounceFunc(route)
+      GlobalData.debouncing = false
+    }
     this.$router.afterEach(this._sync)
     this._sync(this.$route)
     this._input.focus()
