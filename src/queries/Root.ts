@@ -23,22 +23,6 @@ import {
 import Docset from './Docset'
 
 
-interface DocItem {
-  name: string
-  type: string
-  path: string
-}
-
-interface FindResult extends DocItem {
-  id: string
-}
-
-export interface ExtendedFindResult extends FindResult {
-  keyword: string
-  scope: string
-}   
-
-
 @DeclareLogger()
 @DeclareClass()
 export default class Root extends QueryBase {
