@@ -21,6 +21,9 @@ import {
   DocsetInfo,
 } from '../interface'
 import Docset from './Docset'
+import {
+  apiHost,
+} from '../config'
 
 
 @DeclareLogger()
@@ -39,7 +42,7 @@ export default class Root extends QueryBase {
   })
   async docsets(pattern: string): Promise<Docset[]> {
     try {
-      const res = await axios.post('http://localhost:3000/graphql', {
+      const res = await axios.post(apiHost('graphql'), {
         query: `
         {
           docset {
@@ -54,7 +57,7 @@ export default class Root extends QueryBase {
         }
         `,
       })
-      const results: DocsetInfo[] = res.data.data.docset.results
+      const results: DocsetInfo[] = (res.data.data.docset.results)? res.data.data.docset.results : []
       const docsets = results.map(info => new Docset(info))
       console.log('docsets: ', docsets.map(doc => doc.info))
       if(!pattern) {

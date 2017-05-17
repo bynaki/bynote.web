@@ -17,6 +17,9 @@ import {
 import {
   DocFindComponent
 } from '../components/docfind'
+import {
+  apiHost,
+} from '../config'
 
 
 @DeclareLogger()
@@ -40,7 +43,7 @@ export default class Docset extends QueryBase {
       return []
     }
     try {
-      const res = await axios.post('http://localhost:3000/graphql', {
+      const res = await axios.post(apiHost('graphql'), {
         query: `
         {
           docset {

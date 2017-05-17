@@ -3,6 +3,9 @@
 
 ## v0.1 (Somewhere Only We Know - Keane)
 
+### v0.1.6 (SIGNAL - TWICE)
+- config.ts > apiHost
+
 ### v0.1.5 (Enter Sandman - Metallica)
 - ListComponent
 - Workflow && GlobalData
