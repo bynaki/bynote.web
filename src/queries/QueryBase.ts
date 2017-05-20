@@ -1,3 +1,7 @@
+/**
+ * query base
+ */
+
 import Vue from 'vue'
 import {
   clone,
