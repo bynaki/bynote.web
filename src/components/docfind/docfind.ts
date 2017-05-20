@@ -3,7 +3,6 @@ import {
   Prop,
 } from 'vue-property-decorator'
 import {ListComponent} from '../listcomponent'
-import {MethodLump} from '../../queries/QueryBase'
 import {
   DeclareLogger,
   Logger,
@@ -13,10 +12,10 @@ import {
 } from '../../interface'
 
 
+@DeclareLogger()
 @ListComponent({
   template: require('./docfind.html')
 })
-@DeclareLogger()
 export class DocFindComponent extends Vue {
   log: Logger
 

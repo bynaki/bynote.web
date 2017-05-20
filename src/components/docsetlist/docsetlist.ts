@@ -10,10 +10,10 @@ import {
 import Docset from '../../queries/Docset'
 
 
+@DeclareLogger()
 @ListComponent({
   template: require('./docsetlist.html')
 })
-@DeclareLogger()
 export class DocsetListComponent extends Vue {
   log: Logger
 

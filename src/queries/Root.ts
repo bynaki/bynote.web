@@ -1,92 +1,44 @@
-import Vue from 'vue'
-import * as _ from 'lodash'
-import {alert} from 'notie'
-import axios, {AxiosError} from 'axios'
+import {
+  basename,
+  dirname,
+} from 'path'
 import * as fuzzy from 'fuzzy'
 import {
   QueryBase,
-  DeclareMethod,
-  DeclareClass,
-} from './QueryBase'
+  DeclareQuery,
+} from './querybase'
 import {
-  DeclareLogger,
-  Logger,
-} from '../utils'
-import {HelloComponent} from '../components/hello'
-import {
-  DocsetListComponent,
-} from '../components/docsetlist'
-import {
-  DocsetScope,
-  DocsetInfo,
-} from '../interface'
-import Docset from './Docset'
-import {
-  apiHost,
-} from '../config'
+  MethodComponent,
+} from '../components/method'
+import DocsetRoot from './DocsetRoot'
+import Hello from './Hello'
 
 
-@DeclareLogger()
-@DeclareClass()
+@DeclareQuery({
+  component: MethodComponent,
+  methods: [
+    new DocsetRoot(),
+    new Hello(),
+  ],
+})
 export default class Root extends QueryBase {
-  log: Logger
-
   constructor() {
-    super('Root')
+    super({
+      name: 'Root',
+      description: 'Root',
+    })
   }
 
-  @DeclareMethod({
-    name: 'Docsets',
-    description: 'Docset list',
-    component: DocsetListComponent,
-  })
-  async docsets(pattern: string): Promise<Docset[]> {
-    try {
-      const res = await axios.post(apiHost('graphql'), {
-        query: `
-        {
-          docset {
-            results: list(
-              scope: ${DocsetScope.OfficialDocset}
-            ) {
-              name
-              keyword
-              scope
-            }
-          }
-        }
-        `,
-      })
-      const results: DocsetInfo[] = (res.data.data.docset.results)? res.data.data.docset.results : []
-      const docsets = results.map(info => new Docset(info))
-      console.log('docsets: ', docsets.map(doc => doc.info))
-      if(!pattern) {
-        return docsets
-      }
-      return fuzzy.filter<Docset>(pattern, docsets, {
-        extract: el => el.name
-      }).map(el => el.original)
-    } catch(err) {
-      const error = err as AxiosError
-      this.log.error(error)
-      if(error.response.data.errors) {
-        this.log.error(error.response.data.errors[0].message)
-      }
-    }
+  private static _history = {
+    '/': new Root()
   }
 
-  @DeclareMethod({
-    name: 'Hello',
-    description: 'Hello World!!',
-    component: HelloComponent,
-  })
-  async hello(): Promise<(msg: string) => void> {
-    return (msg: string) => {
-      alert({
-        type: 'info',
-        text: msg,
-        position: 'bottom',
-      })
+  static async history(uri: string): Promise<QueryBase> {
+    if(!this._history[uri]) {
+      this._history[uri] = (await (await this.history(dirname(uri)))
+        .$next(decodeURIComponent(basename(uri))))
+      this._history[uri]._path = uri
     }
+    return this._history[uri]
   }
 }

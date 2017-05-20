@@ -3,6 +3,9 @@ import Component from 'vue-class-component'
 import * as _ from 'lodash'
 import {parse as parseUrl} from 'url'
 import {
+  join
+} from 'path'
+import {
   KeyboardShortcut,
   Workflow,
   GlobalData
@@ -16,11 +19,13 @@ export declare type VueClass = {
 
 function onResChanged(newRes: any) {
   this.log.info('onResChanged')
+  this._path = this.$route.path
   this.$nextTick(() => {
     const list = new ItemList(this.$el)
     list.active(0)
   })
 }
+
 
 export function ListComponent<U extends Vue>(options: ComponentOptions<U>)
   : <V extends VueClass>(target: V) => V {
@@ -101,8 +106,14 @@ export function ListComponent<U extends Vue>(options: ComponentOptions<U>)
     }
 
     target.prototype.realPath = function(uri: string): string {
-      const path = (this.$route.path === '/')? '' : this.$route.path
-      return `${path}/${encodeURIComponent(uri)}`
+      if(!this._path) {
+        this._path = this.$route.path
+      }
+      return join(this._path, encodeURIComponent(uri))
+      // if(!this._path) {
+      //   this._path = (this.$route.path === '/')? '' : this.$route.path
+      // }
+      // return `${this._path}/${encodeURIComponent(uri)}`
     }
 
     let cOpts = _.assign({}, options)

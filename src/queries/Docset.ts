@@ -3,9 +3,8 @@ import * as _ from 'lodash'
 import axios, {AxiosError} from 'axios'
 import {
   QueryBase,
-  DeclareMethod,
-  DeclareClass,
-} from './QueryBase'
+  DeclareQuery,
+} from './querybase'
 import {
   DeclareLogger,
   Logger,
@@ -23,22 +22,19 @@ import {
 
 
 @DeclareLogger()
-@DeclareClass()
+@DeclareQuery({
+  component: DocFindComponent,
+})
 export default class Docset extends QueryBase {
   log: Logger
   private _info: DocsetInfo
   
   constructor(info: DocsetInfo) {
-    super(info.name)
+    super({name: info.name})
     this._info = _.clone<DocsetInfo>(info)
   }
 
-  @DeclareMethod({
-    name: 'Find',
-    description: 'Find Document',
-    component: DocFindComponent,
-  })
-  async find(pattern: string): Promise<ExtendedFindResult[]> {
+  async $query(pattern: string = ''): Promise<ExtendedFindResult[]> {
     if(!pattern) {
       return []
     }
@@ -76,6 +72,9 @@ export default class Docset extends QueryBase {
         this.log.error(error.response.data.errors[0].message)
       }
     }
+  }
+
+  async $next(name: string): Promise<void> {
   }
 
   get info(): DocsetInfo {

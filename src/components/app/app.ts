@@ -4,7 +4,7 @@ import VueRouter, {Route} from 'vue-router'
 import Component from 'vue-class-component'
 import * as debounce from 'debounce-promise'
 import {QueryComponent} from '../query'
-import Processor from '../../Processor'
+import Root from '../../queries/Root'
 import {
   Logger,
   DeclareLogger,
@@ -23,9 +23,8 @@ import {
 @DeclareLogger()
 export class AppComponent extends Vue {
   log: Logger
-  view: any = null
+  view: typeof Vue = null
   response: any = null
-  processor: Processor = Processor.get()
   private _input: HTMLInputElement
   private _sync: (route: Route) => void 
 
@@ -33,9 +32,9 @@ export class AppComponent extends Vue {
     this.log.info('mounted')
     this._input = this.$el.querySelector('#query-input') as HTMLInputElement
     const debounceFunc = debounce(async (route: Route) => {
-      const method = await this.processor.get(route.path)
-      this.response = await method((route.query.query)? route.query.query : '')
-      this.view = method.getLump().component
+      const query = await Root.history(route.path)
+      this.response = await query.$query(route.query.query)
+      this.view = query.$options.component
       this._input.focus()
       return this.response
     }, 500)

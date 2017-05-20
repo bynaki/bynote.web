@@ -2,8 +2,12 @@ import Vue from 'vue'
 import {
   Prop,
 } from 'vue-property-decorator'
-import {ListComponent} from '../listcomponent'
-import {MethodLump} from '../../queries/QueryBase'
+import {
+  ListComponent
+} from '../listcomponent'
+import {
+  QueryBase,
+} from '../../queries/querybase'
 import {
   DeclareLogger,
   Logger,
@@ -18,7 +22,7 @@ export class MethodComponent extends Vue {
   log: Logger
 
   @Prop
-  response: MethodLump[]
+  response: QueryBase[]
 
   mounted() {
     this.log.info('mounted')
