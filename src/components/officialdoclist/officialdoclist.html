@@ -1,0 +1,11 @@
+<div id="official-doc-list" class="list-group">
+  <router-link
+    class="list-group-item"
+    v-for="(item, index) in response"
+    :to="realPath(item.$name)"
+    :key="item.$name"
+  >
+    <h4 class="list-group-item-heading">{{item.$name}} <span>{{(item.localName)? 'Delete' : 'Download'}}</span></h4>
+    <p class="list-group-item-text">feed url: {{item.feedUrl}}</p>
+  </router-link>
+</div>

@@ -1,0 +1,9 @@
+#official-doc-list .list-group-item-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 글자 생략 */
+}
+
+#official-doc-list h4 span {
+  float: right;
+}

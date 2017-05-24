@@ -11,12 +11,14 @@ import {
   MethodComponent,
 } from '../components/method'
 import DocsetList from './DocsetList'
+import OfficialDocsetList from './OfficialDocsetList'
 
 
 @DeclareQuery({
   component: MethodComponent,
   methods: [
     new DocsetList(),
+    new OfficialDocsetList(),
   ],
 })
 export default class DocsetRoot extends QueryBase {
