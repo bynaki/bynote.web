@@ -87,8 +87,11 @@ export default class OfficialDocsetList extends QueryBase {
         }
       }
     }
-    this.log.info(this._officialList)
-    return this._officialList
+    return fuzzy.filter<OfficialDocset>(pattern, this._officialList, {
+      extract: el => {
+        return `${el.$name} ${(el.localName)? 'delete' : 'download'}`
+      }
+    }).map(el => el.original)
   }
 
   async $next(name: string): Promise<OfficialDocset> {

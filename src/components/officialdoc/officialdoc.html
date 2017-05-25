@@ -1,7 +1,7 @@
 <div>
   <p>OfficialDocComponent</p>
 <!-- Modal -->
-<div class="modal fade" id="officialDocModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="official-doc-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -13,7 +13,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"> Cancel </button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="onOK"> {{(response.localName)? 'Delete?' : 'Download?'}} </button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="onOK"> {{(response.localName)? 'Delete' : 'Download'}} </button>
       </div>
     </div>
   </div>

@@ -1,4 +1,3 @@
-import {alert} from 'notie'
 import {
   QueryBase,
   DeclareQuery,
@@ -37,15 +36,14 @@ export default class OfficialDocset extends QueryBase {
     return this._localName
   }
 
+  download() {
+  }
+
+  delete() {
+  }
+
   async $query(pattern: string = '') {
-    return async () => {
-      const text = (this._localName)? 'Deleting' : 'Downloading'
-      alert({
-        type: 'info',
-        text,
-        position: 'bottom',
-      })
-    }
+    return this
   }
 
   async $next(name: string) {

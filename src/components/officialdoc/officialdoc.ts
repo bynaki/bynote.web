@@ -1,14 +1,15 @@
 import Vue from 'vue'
-// import Component from 'vue-class-component'
 import {
   Component,
   Prop,
 } from 'vue-property-decorator'
+import {alert} from 'notie'
 import {
   DeclareLogger,
   Logger,
 } from '../../utils'
 import $ from 'jquery'
+import OfficialDocset from '../../queries/OfficialDocset'
 
 
 @Component({
@@ -19,16 +20,21 @@ export class OfficialDocComponent extends Vue {
   log: Logger
 
   @Prop
-  response: () => void
+  response: OfficialDocset
 
   mounted() {
     this.log.info('mounted')
-    $('#OfficialDocModal').modal('show').on('hidden.bs.modal', e => {
+    $('#official-doc-modal').modal('show').on('hidden.bs.modal', e => {
       this.$router.back()
     })
   }
 
   onOK() {
-    this.response()
+    (this.response.localName)? this.response.delete() : this.response.download()
+    alert({
+      type: 'info',
+      text: (this.response.localName)? 'Deleting' : 'Downloading',
+      position: 'bottom',
+    })
   }
 }
