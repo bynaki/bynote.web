@@ -1,16 +1,15 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import {AppComponent} from './components/app'
+import Router from 'vue-router'
 import 'jquery'
 import 'bootstrap/dist/js/bootstrap'
+import router from './router'
+import {AppComponent} from './components/app'
 
-// register the plugin
-Vue.use(VueRouter);
 
 new Vue({
   el: '#app',
-  router: new VueRouter(),
+  router,
   components: {
-    'app': AppComponent
+    'app': AppComponent,
   }
 });
