@@ -10,7 +10,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/author',
+      path: '/author/:redirect?',
       name: 'Author',
       component: AuthorComponent,
     },

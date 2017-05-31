@@ -1,0 +1,9 @@
+#author .control-label {
+  text-align: right;
+  padding-top: 7px;
+  margin-bottom: 0;
+}
+
+#author #submit {
+  float: right;
+}

@@ -52,3 +52,13 @@ export interface DocsetInfo {
   info?: DocsetInfoPlist
   feed?: DocsetFeedWithUrl
 }
+
+
+export interface GraphQLError {
+  message: string,
+  locations: {
+    line: number,
+    column: number,
+  }[],
+  path: string[],
+}
