@@ -12,6 +12,7 @@ import {
 } from '../components/method'
 import DocsetRoot from './DocsetRoot'
 import Hello from './Hello'
+import Authorization from './Authorization'
 
 
 @DeclareQuery({
@@ -19,6 +20,7 @@ import Hello from './Hello'
   methods: [
     new DocsetRoot(),
     new Hello(),
+    new Authorization('/author/%2F'),
   ],
 })
 export default class Root extends QueryBase {

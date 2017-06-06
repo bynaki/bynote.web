@@ -2,7 +2,7 @@
   <router-link
     class="list-group-item"
     v-for="(item, index) in response"
-    :to="realPath(item.$name)"
+    :to="(item.url)? item.url : realPath(item.$name)"
     :key="item.name"
   >
     <h4 class="list-group-item-heading">{{item.$name}}</h4>

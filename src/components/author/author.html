@@ -1,7 +1,7 @@
 <div id="author">
   <h2>Authorization</h2>
   <br />
-  <form class="form-horizontal">
+  <form class="form-horizontal" @submit="onSubmit">
     <div class="form-group" id="password-form-group">
       <label for="input-password" class="col-xs-3 control-label">Password</label>
       <div class="col-xs-9">
@@ -42,7 +42,6 @@
       type="submit"
       class="btn btn-default btn-lg"
       id="submit"
-      @click="onSubmit"
     > Submit 
     </button>
   </form>

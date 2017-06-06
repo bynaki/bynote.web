@@ -11,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/author/:redirect?',
-      name: 'Author',
+      name: 'Authorization',
       component: AuthorComponent,
     },
     {
