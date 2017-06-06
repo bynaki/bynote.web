@@ -1,3 +1,4 @@
+import axios, {AxiosError} from 'axios'
 import {
   QueryBase,
   DeclareQuery,
@@ -5,6 +6,13 @@ import {
 import {
   OfficialDocComponent,
 } from '../components/officialdoc'
+import {
+  apiHost,
+} from '../config'
+import {
+  MyAxiosError
+} from '../utils'
+
 
 
 @DeclareQuery({
@@ -36,7 +44,20 @@ export default class OfficialDocset extends QueryBase {
     return this._localName
   }
 
-  download() {
+  async download() {
+    const res = await axios.post(apiHost('graphql'), {
+      query: `
+      mutation {
+        docset {
+          download(feed_url: "${this._feedUrl}")
+        }
+      }
+      `,
+    })
+    if(!res.data.data.docset.download) {
+      throw new MyAxiosError(res, '')
+    }
+    return res.data.data.docset.download
   }
 
   delete() {
