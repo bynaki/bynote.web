@@ -1,9 +1,9 @@
 <div id="query">
   <router-link
-    v-for="el in urlEles"
-    :key="el.url"
+    v-for="el in chopedPaths"
+    :key="el.path"
     class="btn btn-success btn-xs"
-    :to="el.url"
+    :to="el.path"
   >
     {{decodeURIComponent(el.name)}}
   </router-link>

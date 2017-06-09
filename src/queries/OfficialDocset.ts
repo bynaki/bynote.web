@@ -53,9 +53,13 @@ export default class OfficialDocset extends QueryBase {
         }
       }
       `,
+    }, {
+      headers: {
+        'x-access-token': localStorage.getItem('token')
+      },
     })
     if(!res.data.data.docset.download) {
-      throw new MyAxiosError(res, '')
+      throw new MyAxiosError(res)
     }
     return res.data.data.docset.download
   }

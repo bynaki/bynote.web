@@ -10,3 +10,8 @@ export class MyAxiosError extends Error {
   }
 }
 
+export interface MyErrorFormat {
+  message: string
+  statusCode?: number
+}
+

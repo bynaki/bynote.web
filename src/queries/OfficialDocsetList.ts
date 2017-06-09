@@ -95,6 +95,9 @@ export default class OfficialDocsetList extends QueryBase {
   }
 
   async $next(name: string): Promise<OfficialDocset> {
+    if(!this._officialList) {
+      return (await this.$query(name))[0]
+    }
     const docset = this._officialList.find(doc => doc.$name === name)
     if(docset) {
       return docset

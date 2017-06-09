@@ -7,6 +7,7 @@ import {
 import {
   DeclareLogger,
   Logger,
+  chopupPath,
 } from '../../utils'
 import $ from 'jquery'
 
@@ -24,7 +25,12 @@ export class HelloComponent extends Vue {
   mounted() {
     this.log.info('mounted')
     $('#helloModal').modal('show').on('hidden.bs.modal', e => {
-      this.$router.back()
+      const chopedPaths = chopupPath(this.$route.path)
+      if(chopedPaths.length > 1) {
+        chopedPaths.pop()
+        // 전 path로 
+        this.$router.push(chopedPaths.pop().path)
+      }
     })
   }
 

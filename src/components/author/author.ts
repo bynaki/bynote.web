@@ -11,13 +11,11 @@ import {
 import {
   Logger,
   DeclareLogger,
+  MyErrorFormat,
 } from '../../utils'
 import {
   apiHost,
 } from '../../config'
-import {
-  GraphQLError,
-} from '../../interface'
 
 
 @Component({
@@ -61,7 +59,7 @@ export class AuthorComponent extends Vue {
       if(!token) {
         let message
         if(res.data.errors[0]) {
-          const error: GraphQLError = res.data.errors[0]
+          const error: MyErrorFormat = res.data.errors[0]
           this.log.error(error)
           message = error.message
         } else {
@@ -87,9 +85,9 @@ export class AuthorComponent extends Vue {
     } catch(err) {
       const error = err as AxiosError
       this.log.error(error)
-      // if(error.response.data.errors) {
-      //   this.log.error(error.response.data.errors[0].message)
-      // }
+      if(error.response.data.errors) {
+        this.log.error(error.response.data.errors[0].message)
+      }
     }
   }
 

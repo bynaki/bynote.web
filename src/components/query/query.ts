@@ -5,6 +5,7 @@ import {
   DeclareLogger,
   Logger,
   KeyboardShortcut,
+  chopupPath,
 } from '../../utils'
 
 
@@ -15,7 +16,7 @@ import {
 export class QueryComponent extends Vue {
   log: Logger
   queryText: string = ''
-  urlEles: {name: string, url: string}[] = []
+  chopedPaths: {name: string, path: string}[] = []
   private _shortDown: KeyboardShortcut
   private _shortUp: KeyboardShortcut
 
@@ -27,10 +28,10 @@ export class QueryComponent extends Vue {
     let remainText = ''
     this._shortDown.register('backspace', event => {
       if(!this.queryText && !remainText) {
-        if(this.urlEles.length > 1) {
-          const urls = this.urlEles.map(ele => ele.url)
-          urls.pop()
-          this.$router.push(urls.pop())
+        if(this.chopedPaths.length > 1) {
+          const paths = this.chopedPaths.map(ele => ele.path)
+          paths.pop()
+          this.$router.push(paths.pop())
         }
         event.preventDefault()
         return
@@ -48,19 +49,7 @@ export class QueryComponent extends Vue {
   private _sync() {
     const query = this.$route.query.query
     this.queryText = (query)? query : ''
-    const splited = this.$route.path.split('/')
-    let trans: {name: string, url: string}[] = []
-    splited.reduce((pre, el, idx) => {
-      const url = pre + el
-      trans.push({name: el, url: url})
-      return url + '/'
-    }, '')
-    trans[0].name = 'Root'
-    trans[0].url = '/'
-    if(trans.length === 2 && trans[1].name === '') {
-      trans = trans.slice(0, 1)
-    }
-    this.urlEles = trans
+    this.chopedPaths = chopupPath(this.$route.path)
   }
 
   @Watch('queryText')
