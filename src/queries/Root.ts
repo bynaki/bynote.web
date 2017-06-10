@@ -43,4 +43,10 @@ export default class Root extends QueryBase {
     }
     return this._history[uri]
   }
+
+  // static resetHistory() {
+  //   this._history = {
+  //     '/': new Root()
+  //   }
+  // }
 }

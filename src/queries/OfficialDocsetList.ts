@@ -19,6 +19,7 @@ import {
 import {
   DeclareLogger,
   Logger,
+  axiosConfig,
 } from '../utils'
 import OfficialDocset from './OfficialDocset'
 
@@ -29,7 +30,7 @@ import OfficialDocset from './OfficialDocset'
 })
 export default class OfficialDocsetList extends QueryBase {
   log: Logger
-  private _officialList: OfficialDocset[]
+  private static _officialList: OfficialDocset[]
 
   constructor() {
     super({
@@ -39,7 +40,7 @@ export default class OfficialDocsetList extends QueryBase {
   }
 
   async $query(pattern: string = ''): Promise<OfficialDocset[]> {
-    if(!this._officialList) {
+    if(!OfficialDocsetList._officialList) {
       try {
         const res = await axios.post(apiHost('graphql'), {
           query: `
@@ -55,10 +56,10 @@ export default class OfficialDocsetList extends QueryBase {
             }
           }
           `,
-        })
+        }, axiosConfig())
         const officialFeedUrlList: string[] = res.data.data.docset.officialFeedUrlList
         if(!officialFeedUrlList) {
-          this._officialList = []
+          OfficialDocsetList._officialList = []
         } else {
           const localList: {
             name: string
@@ -66,7 +67,7 @@ export default class OfficialDocsetList extends QueryBase {
               feed_url: string
             }
           }[] = res.data.data.docset.localList
-          this._officialList = officialFeedUrlList.map(feedUrl => {
+          OfficialDocsetList._officialList = officialFeedUrlList.map(feedUrl => {
             const args = {
               name: decodeURIComponent(basename(feedUrl, '.xml')),
               feedUrl,
@@ -87,7 +88,7 @@ export default class OfficialDocsetList extends QueryBase {
         }
       }
     }
-    return fuzzy.filter<OfficialDocset>(pattern, this._officialList, {
+    return fuzzy.filter<OfficialDocset>(pattern, OfficialDocsetList._officialList, {
       extract: el => {
         return `${el.$name} ${(el.localName)? 'delete' : 'download'}`
       }
@@ -95,14 +96,18 @@ export default class OfficialDocsetList extends QueryBase {
   }
 
   async $next(name: string): Promise<OfficialDocset> {
-    if(!this._officialList) {
+    if(!OfficialDocsetList._officialList) {
       return (await this.$query(name))[0]
     }
-    const docset = this._officialList.find(doc => doc.$name === name)
+    const docset = OfficialDocsetList._officialList.find(doc => doc.$name === name)
     if(docset) {
       return docset
     } else {
       return (await this.$query(name))[0]
     }
+  }
+
+  static reset() {
+    this._officialList = undefined
   }
 }

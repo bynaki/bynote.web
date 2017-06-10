@@ -10,7 +10,8 @@ import {
   apiHost,
 } from '../config'
 import {
-  MyAxiosError
+  MyAxiosError,
+  axiosConfig,
 } from '../utils'
 
 
@@ -53,11 +54,7 @@ export default class OfficialDocset extends QueryBase {
         }
       }
       `,
-    }, {
-      headers: {
-        'x-access-token': localStorage.getItem('token')
-      },
-    })
+    }, axiosConfig())
     if(!res.data.data.docset.download) {
       throw new MyAxiosError(res)
     }

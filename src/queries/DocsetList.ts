@@ -18,6 +18,7 @@ import {
 import {
   DeclareLogger,
   Logger,
+  axiosConfig,
 } from '../utils'
 import Docset from './Docset'
 
@@ -53,7 +54,7 @@ export default class DocsetList extends QueryBase {
           }
         }
         `,
-      })
+      }, axiosConfig())
       const results: DocsetInfo[] = (res.data.data.docset.results)? res.data.data.docset.results : []
       const docsets = results.map(info => new Docset(info))
       console.log('docsets: ', docsets.map(doc => doc.info))

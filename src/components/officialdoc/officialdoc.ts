@@ -13,6 +13,7 @@ import {
 } from '../../utils'
 import $ from 'jquery'
 import OfficialDocset from '../../queries/OfficialDocset'
+import OfficialDocsetList from '../../queries/OfficialDocsetList'
 
 
 @Component({
@@ -49,6 +50,7 @@ export class OfficialDocComponent extends Vue {
           text: 'Download Success!!',
           position: 'bottom',
         })
+        OfficialDocsetList.reset()
         this._backParent()
       })
       .catch(err => {

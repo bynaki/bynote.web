@@ -20,3 +20,14 @@ export function chopupPath(fullPath: string): {name: string, path: string}[] {
   }
   return trans
 }
+
+export function axiosConfig() {
+  const token = localStorage.getItem('token')
+  if(token) {
+    return {
+      headers: {
+        'x-access-token': localStorage.getItem('token')
+      },
+    }
+  }
+}

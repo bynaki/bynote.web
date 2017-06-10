@@ -12,6 +12,7 @@ import {
   Logger,
   DeclareLogger,
   MyErrorFormat,
+  axiosConfig,
 } from '../../utils'
 import {
   apiHost,
@@ -53,7 +54,7 @@ export class AuthorComponent extends Vue {
           )
         }
         `,
-      })
+      }, axiosConfig())
       const token = res.data.data.token
       this.log.info('token: ', token)
       if(!token) {
@@ -78,7 +79,7 @@ export class AuthorComponent extends Vue {
           if(url.protocol === 'http:' || url.protocol === 'https:') {
             location.href = url.href
           } else {
-            this.$router.push(url.href)
+            this.$router.replace(url.href)
           }
         }
       }
