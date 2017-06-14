@@ -8,7 +8,6 @@ import {
 import {
   DeclareLogger,
   Logger,
-  axiosConfig,
 } from '../utils'
 import {
   DocsetInfo,
@@ -63,7 +62,7 @@ export default class Docset extends QueryBase {
           }
         }
         `,
-      }, axiosConfig())
+      })
       const results = res.data.data.docset.results
       return results
     } catch(err) {

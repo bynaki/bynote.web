@@ -21,7 +21,7 @@ export function chopupPath(fullPath: string): {name: string, path: string}[] {
   return trans
 }
 
-export function axiosConfig() {
+export function includeToken() {
   const token = localStorage.getItem('token')
   if(token) {
     return {

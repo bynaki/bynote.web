@@ -12,7 +12,6 @@ import {
   Logger,
   DeclareLogger,
   MyErrorFormat,
-  axiosConfig,
 } from '../../utils'
 import {
   apiHost,
@@ -54,7 +53,7 @@ export class AuthorComponent extends Vue {
           )
         }
         `,
-      }, axiosConfig())
+      })
       const token = res.data.data.token
       this.log.info('token: ', token)
       if(!token) {

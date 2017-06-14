@@ -19,7 +19,6 @@ import {
 import {
   DeclareLogger,
   Logger,
-  axiosConfig,
 } from '../utils'
 import OfficialDocset from './OfficialDocset'
 
@@ -56,7 +55,7 @@ export default class OfficialDocsetList extends QueryBase {
             }
           }
           `,
-        }, axiosConfig())
+        })
         const officialFeedUrlList: string[] = res.data.data.docset.officialFeedUrlList
         if(!officialFeedUrlList) {
           OfficialDocsetList._officialList = []

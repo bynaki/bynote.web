@@ -11,7 +11,7 @@ import {
 } from '../config'
 import {
   MyAxiosError,
-  axiosConfig,
+  includeToken,
 } from '../utils'
 
 
@@ -54,7 +54,7 @@ export default class OfficialDocset extends QueryBase {
         }
       }
       `,
-    }, axiosConfig())
+    }, includeToken())
     if(!res.data.data.docset.download) {
       throw new MyAxiosError(res)
     }
