@@ -11,7 +11,8 @@ import {
 import {
   Logger,
   DeclareLogger,
-  MyErrorFormat,
+  MyAxiosError,
+  processError,
 } from '../../utils'
 import {
   apiHost,
@@ -56,38 +57,25 @@ export class AuthorComponent extends Vue {
       })
       const token = res.data.data.token
       this.log.info('token: ', token)
-      if(!token) {
-        let message
-        if(res.data.errors[0]) {
-          const error: MyErrorFormat = res.data.errors[0]
-          this.log.error(error)
-          message = error.message
+      // if(!token) {
+      //   if(res.data.errors) {
+      //     throw new MyAxiosError(res)
+      //   } else {
+      //     throw new Error('authentication failed')
+      //   }
+      // } else if(token) {
+      this.token = token
+      if(this.$route.params.redirect) {
+        const url = parseUrl(decodeURIComponent(this.$route.params.redirect))
+        if(url.protocol === 'http:' || url.protocol === 'https:') {
+          location.href = url.href
         } else {
-          message = 'authentication failed'
-          this.log.error(message)
-        }
-        alert({
-          type: 'error',
-          text: message,
-          position: 'bottom',
-        })
-      } else if(token) {
-        this.token = token
-        if(this.$route.params.redirect) {
-          const url = parseUrl(decodeURIComponent(this.$route.params.redirect))
-          if(url.protocol === 'http:' || url.protocol === 'https:') {
-            location.href = url.href
-          } else {
-            this.$router.replace(url.href)
-          }
+          this.$router.replace(url.href)
         }
       }
+      // }
     } catch(err) {
-      const error = err as AxiosError
-      this.log.error(error)
-      if(error.response.data.errors) {
-        this.log.error(error.response.data.errors[0].message)
-      }
+      processError(err, this)
     }
   }
 

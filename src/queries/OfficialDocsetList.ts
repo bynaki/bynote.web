@@ -40,7 +40,7 @@ export default class OfficialDocsetList extends QueryBase {
 
   async $query(pattern: string = ''): Promise<OfficialDocset[]> {
     if(!OfficialDocsetList._officialList) {
-      try {
+      // try {
         const res = await axios.post(apiHost('graphql'), {
           query: `
           {
@@ -56,36 +56,55 @@ export default class OfficialDocsetList extends QueryBase {
           }
           `,
         })
+        // const officialFeedUrlList: string[] = res.data.data.docset.officialFeedUrlList
+        // if(!officialFeedUrlList) {
+        //   OfficialDocsetList._officialList = []
+        // } else {
+        //   const localList: {
+        //     name: string
+        //     feed: {
+        //       feed_url: string
+        //     }
+        //   }[] = res.data.data.docset.localList
+        //   OfficialDocsetList._officialList = officialFeedUrlList.map(feedUrl => {
+        //     const args = {
+        //       name: decodeURIComponent(basename(feedUrl, '.xml')),
+        //       feedUrl,
+        //       localName: '',
+        //     }
+        //     const matched = localList.find(local => local.feed.feed_url === feedUrl)
+        //     if(matched) {
+        //       args.localName = matched.name
+        //     } 
+        //     return new OfficialDocset(args)
+        //   })
+        // }
         const officialFeedUrlList: string[] = res.data.data.docset.officialFeedUrlList
-        if(!officialFeedUrlList) {
-          OfficialDocsetList._officialList = []
-        } else {
-          const localList: {
-            name: string
-            feed: {
-              feed_url: string
-            }
-          }[] = res.data.data.docset.localList
-          OfficialDocsetList._officialList = officialFeedUrlList.map(feedUrl => {
-            const args = {
-              name: decodeURIComponent(basename(feedUrl, '.xml')),
-              feedUrl,
-              localName: '',
-            }
-            const matched = localList.find(local => local.feed.feed_url === feedUrl)
-            if(matched) {
-              args.localName = matched.name
-            } 
-            return new OfficialDocset(args)
-          })
-        }
-      } catch(err) {
-        const error = err as AxiosError
-        this.log.error(error)
-        if(error.response.data.errors) {
-          this.log.error(error.response.data.errors[0].message)
-        }
-      }
+        const localList: {
+          name: string
+          feed: {
+            feed_url: string
+          }
+        }[] = res.data.data.docset.localList
+        OfficialDocsetList._officialList = officialFeedUrlList.map(feedUrl => {
+          const args = {
+            name: decodeURIComponent(basename(feedUrl, '.xml')),
+            feedUrl,
+            localName: '',
+          }
+          const matched = localList.find(local => local.feed.feed_url === feedUrl)
+          if(matched) {
+            args.localName = matched.name
+          } 
+          return new OfficialDocset(args)
+        })
+      // } catch(err) {
+      //   const error = err as AxiosError
+      //   this.log.error(error)
+      //   if(error.response.data.errors) {
+      //     this.log.error(error.response.data.errors[0].message)
+      //   }
+      // }
     }
     return fuzzy.filter<OfficialDocset>(pattern, OfficialDocsetList._officialList, {
       extract: el => {

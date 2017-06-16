@@ -55,9 +55,6 @@ export default class OfficialDocset extends QueryBase {
       }
       `,
     }, includeToken())
-    if(!res.data.data.docset.download) {
-      throw new MyAxiosError(res)
-    }
     return res.data.data.docset.download
   }
 

@@ -10,6 +10,7 @@ import {
   KeyboardShortcut,
   Workflow,
   GlobalData,
+  processError,
 } from '../../utils'
 import router from '../../router'
 
@@ -33,7 +34,11 @@ export class RootComponent extends Vue {
     this._input = this.$el.querySelector('#query-input') as HTMLInputElement
     const debounceFunc = debounce(async (route: Route) => {
       const query = await Root.history(route.path)
-      this.response = await query.$query(route.query.query)
+      try {
+        this.response = await query.$query(route.query.query)
+      } catch(err) {
+        processError(err, this)
+      }
       this.view = query.$options.component
       this._input.focus()
       return this.response

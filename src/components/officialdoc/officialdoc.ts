@@ -10,6 +10,7 @@ import {
   MyAxiosError,
   MyErrorFormat,
   chopupPath,
+  processError,
 } from '../../utils'
 import $ from 'jquery'
 import OfficialDocset from '../../queries/OfficialDocset'
@@ -54,25 +55,7 @@ export class OfficialDocComponent extends Vue {
         this._backParent()
       })
       .catch(err => {
-        const error = err as MyAxiosError
-        let text = ''
-        if(error.message) {
-          text = error.message + ((error.response.data && error.response.data.errors)? ' > ' : '')
-        }
-        if(error.response.data && error.response.data.errors) {
-          const err = error.response.data.errors[0] as MyErrorFormat
-          text += err.message
-          this.log.error(error.response.data.errors[0])
-          if(err.statusCode && err.statusCode === 401) {
-            this.$router.replace('/author/' + encodeURIComponent(this.$route.fullPath))
-          }
-        }
-        alert({
-          type: 'error',
-          text,
-          position: 'bottom',
-          time: 5,
-        })
+        processError(err, this)
       })
     }
     alert({

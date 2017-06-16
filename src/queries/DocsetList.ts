@@ -38,39 +38,30 @@ export default class DocsetList extends QueryBase {
   }
 
   async $query(pattern: string = ''): Promise<Docset[]> {
-    try {
-      const res = await axios.post(apiHost('graphql'), {
-        query: `
-        {
-          docset {
-            results: list(
-              scope: ${DocsetScope.OfficialDocset}
-            ) {
-              name
-              keyword
-              scope
-            }
+    const res = await axios.post(apiHost('graphql'), {
+      query: `
+      {
+        docset {
+          results: list(
+            scope: ${DocsetScope.OfficialDocset}
+          ) {
+            name
+            keyword
+            scope
           }
         }
-        `,
-      })
-      const results: DocsetInfo[] = (res.data.data.docset.results)? res.data.data.docset.results : []
-      const docsets = results.map(info => new Docset(info))
-      console.log('docsets: ', docsets.map(doc => doc.info))
-      if(!pattern) {
-        return docsets
       }
-      this._lastests = fuzzy.filter<Docset>(pattern, docsets, {
-        extract: el => el.$name
-      }).map(el => el.original)
-      return this._lastests
-    } catch(err) {
-      const error = err as AxiosError
-      this.log.error(error)
-      if(error.response.data.errors) {
-        this.log.error(error.response.data.errors[0].message)
-      }
+      `,
+    })
+    const results: DocsetInfo[] = res.data.data.docset.results
+    const docsets = results.map(info => new Docset(info))
+    if(!pattern) {
+      return docsets
     }
+    this._lastests = fuzzy.filter<Docset>(pattern, docsets, {
+      extract: el => el.$name
+    }).map(el => el.original)
+    return this._lastests
   }
 
   async $next(name: string): Promise<Docset> {
