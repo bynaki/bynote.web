@@ -48,6 +48,7 @@ export default class OfficialDocsetList extends QueryBase {
               officialFeedUrlList
               localList: list(scope: ${DocsetScope.OfficialDocset}) {
                 name
+                keyword
                 feed {
                   feed_url
                 }
@@ -82,6 +83,7 @@ export default class OfficialDocsetList extends QueryBase {
         const officialFeedUrlList: string[] = res.data.data.docset.officialFeedUrlList
         const localList: {
           name: string
+          keyword: string
           feed: {
             feed_url: string
           }
@@ -89,12 +91,13 @@ export default class OfficialDocsetList extends QueryBase {
         OfficialDocsetList._officialList = officialFeedUrlList.map(feedUrl => {
           const args = {
             name: decodeURIComponent(basename(feedUrl, '.xml')),
+            keyword: '',
             feedUrl,
-            localName: '',
           }
           const matched = localList.find(local => local.feed.feed_url === feedUrl)
           if(matched) {
-            args.localName = matched.name
+            console.log(matched.keyword)
+            args.keyword = matched.keyword
           } 
           return new OfficialDocset(args)
         })
@@ -108,7 +111,7 @@ export default class OfficialDocsetList extends QueryBase {
     }
     return fuzzy.filter<OfficialDocset>(pattern, OfficialDocsetList._officialList, {
       extract: el => {
-        return `${el.$name} ${(el.localName)? 'delete' : 'download'}`
+        return `${el.$name} ${(el.keyword)? 'delete' : 'download'}`
       }
     }).map(el => el.original)
   }

@@ -40,28 +40,25 @@ export class OfficialDocComponent extends Vue {
   }
 
   onOK() {
-    this._ok = true
-    if(this.response.localName) {
-      this.response.delete()
-    } else {
-      this.response.download()
-      .then(() => {
-        alert({
-          type: 'success',
-          text: 'Download Success!!',
-          position: 'bottom',
-        })
-        OfficialDocsetList.reset()
-        this._backParent()
-      })
-      .catch(err => {
-        processError(err, this)
-      })
-    }
     alert({
       type: 'info',
-      text: (this.response.localName)? 'Deleting' : 'Downloading',
+      text: (this.response.keyword)? 'Deleting' : 'Downloading',
       position: 'bottom',
+    })
+    this._ok = true
+    this._toggle()
+    .then(() => {
+      alert({
+        type: 'success',
+        text: (this.response.keyword)? 'Deleting Success!!' : 'Downloading Success!!',
+        position: 'bottom',
+      })
+      this.response.$removeAtHistory()
+      OfficialDocsetList.reset()
+      this._backParent()
+    })
+    .catch(err => {
+      processError(err, this)
     })
   }
 
@@ -71,6 +68,14 @@ export class OfficialDocComponent extends Vue {
       chopedPaths.pop()
       // 전 path로 
       this.$router.push(chopedPaths.pop().path)
+    }
+  }
+
+  private async _toggle() {
+    if(this.response.keyword) {
+      return this.response.delete()
+    } else {
+      return this.response.download()
     }
   }
 }

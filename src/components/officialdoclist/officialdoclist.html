@@ -5,7 +5,7 @@
     :to="realPath(item.$name)"
     :key="item.$name"
   >
-    <h4 class="list-group-item-heading">{{item.$name}} <span>{{(item.localName)? 'Delete' : 'Download'}}</span></h4>
+    <h4 class="list-group-item-heading">{{item.$name}} <span>{{(item.keyword)? 'Delete' : 'Download'}}</span></h4>
     <p class="list-group-item-text">feed url: {{item.feedUrl}}</p>
   </router-link>
 </div>

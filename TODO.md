@@ -1,6 +1,4 @@
 # TODO
 
-
-Docset | OfficialDocsetList                 | DocsetList
------- | -----------------------------------| -------------------------------------------- 
-       | Delete: OfficialDocset1(downloaded)</br> Download: OfficialDocset2(not download) | Docset1(Official)</br> Docset2(Note)</br>
+- download 하고 나서 다시 official docset list 할때 에러가 발생한다.
+- author 페이지에서 expires in 기간이 제대로 적용이 안되는 것 같다.

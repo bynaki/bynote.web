@@ -37,11 +37,16 @@ export default class Root extends QueryBase {
 
   static async history(uri: string): Promise<QueryBase> {
     if(!this._history[uri]) {
-      this._history[uri] = (await (await this.history(dirname(uri)))
+      const target = (await (await this.history(dirname(uri)))
         .$next(decodeURIComponent(basename(uri))))
-      this._history[uri]._path = uri
+      target.$setUri(uri)
+      this._history[uri] = target
     }
     return this._history[uri]
+  }
+
+  static removeAtHistory(uri: string) {
+    delete this._history[uri]
   }
 
   // static resetHistory() {

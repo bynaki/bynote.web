@@ -7,6 +7,7 @@ import {
   clone,
 } from 'lodash'
 import * as fuzzy from 'fuzzy'
+import Root from './Root'
 
 
 export interface QueryDescription {
@@ -17,6 +18,7 @@ export interface QueryDescription {
 export class QueryBase {
   private _name: string
   private _description: string
+  private _uri: string
 
   constructor(description: QueryDescription) {
     this._name = description.name
@@ -46,6 +48,16 @@ export class QueryBase {
 
   async $next(name: string): Promise<any> {
     return this.$options.methods.find(el => el.$name === name)
+  }
+
+  $setUri(uri: string) {
+    this._uri = uri
+  }
+
+  $removeAtHistory() {
+    if(this._uri) {
+      Root.removeAtHistory(this._uri)
+    }
   }
 }
 

@@ -21,28 +21,28 @@ import {
 })
 export default class OfficialDocset extends QueryBase {
   private _feedUrl: string
-  private _localName: string
+  private _keyword: string
 
   constructor({
     name,
     feedUrl,
-    localName,
+    keyword,
   }: {
     name: string
     feedUrl: string
-    localName?: string
+    keyword?: string
   }) {
     super({name})
     this._feedUrl = feedUrl
-    this._localName = localName
+    this._keyword = keyword
   }
 
   get feedUrl() {
     return this._feedUrl
   }
 
-  get localName() {
-    return this._localName
+  get keyword() {
+    return this._keyword
   }
 
   async download() {
@@ -58,7 +58,17 @@ export default class OfficialDocset extends QueryBase {
     return res.data.data.docset.download
   }
 
-  delete() {
+  async delete() {
+    const res = await axios.post(apiHost('graphql'), {
+      query: `
+      mutation {
+        docset {
+          delete(keyword: "${this.keyword}")
+        }
+      }
+      `,
+    }, includeToken())
+    return res.data.data.docset.delete
   }
 
   async $query(pattern: string = '') {

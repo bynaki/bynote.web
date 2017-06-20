@@ -9,11 +9,11 @@
         <h4 class="modal-title" id="myModalLabel">{{response.$name}}</h4>
       </div>
       <div class="modal-body">
-        {{(response.localName)? 'Delete?' : 'Download?'}}
+        {{(response.keyword)? 'Delete?' : 'Download?'}}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"> Cancel </button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="onOK"> {{(response.localName)? 'Delete' : 'Download'}} </button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="onOK"> {{(response.keyword)? 'Delete' : 'Download'}} </button>
       </div>
     </div>
   </div>
