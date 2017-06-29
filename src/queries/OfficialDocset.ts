@@ -10,7 +10,6 @@ import {
   apiHost,
 } from '../config'
 import {
-  MyAxiosError,
   includeToken,
 } from '../utils'
 

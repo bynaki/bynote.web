@@ -11,7 +11,6 @@ import {
 import {
   Logger,
   DeclareLogger,
-  MyAxiosError,
   processError,
 } from '../../utils'
 import {
@@ -57,13 +56,6 @@ export class AuthorComponent extends Vue {
       })
       const token = res.data.data.token
       this.log.info('token: ', token)
-      // if(!token) {
-      //   if(res.data.errors) {
-      //     throw new MyAxiosError(res)
-      //   } else {
-      //     throw new Error('authentication failed')
-      //   }
-      // } else if(token) {
       this.token = token
       if(this.$route.params.redirect) {
         const url = parseUrl(decodeURIComponent(this.$route.params.redirect))

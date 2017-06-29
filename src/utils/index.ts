@@ -12,7 +12,6 @@ import {
   alert,
 } from 'notie'
 import {
-  MyAxiosError,
   MyErrorFormat,
 } from './errors'
 
@@ -44,14 +43,13 @@ export function includeToken() {
   }
 }
 
-export function processError<V extends Vue>(err: Error, component: V) {
-  const error = err as MyAxiosError
+export function processError<V extends Vue>(error: AxiosError, component: V) {
   let text = error.message
   if(error.response) {
     if(error.response.data && error.response.data.errors) {
       const err = error.response.data.errors[0] as MyErrorFormat
       text += (text)? (' > ' + err.message) : err.message
-      if(err.statusCode && err.statusCode === 401) {
+      if(error.response.status === 401) {
         component.$router.replace('/author/' + encodeURIComponent(component.$route.fullPath))
       }
     }

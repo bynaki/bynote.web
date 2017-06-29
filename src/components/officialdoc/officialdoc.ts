@@ -7,8 +7,6 @@ import {alert} from 'notie'
 import {
   DeclareLogger,
   Logger,
-  MyAxiosError,
-  MyErrorFormat,
   chopupPath,
   processError,
 } from '../../utils'
